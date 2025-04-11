@@ -1,0 +1,8 @@
+@startuml
+title "Test Diagram"
+
+rectangle "Component A" as A
+rectangle "Component B" as B
+A -> B
+
+@enduml 

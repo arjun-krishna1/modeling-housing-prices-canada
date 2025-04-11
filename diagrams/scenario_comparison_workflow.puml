@@ -1,0 +1,137 @@
+@startuml Toronto Housing Model - Scenario Comparison Workflow
+
+skinparam handwritten false
+skinparam shadowing false
+skinparam DefaultFontSize 12
+skinparam ArrowColor #333333
+skinparam BackgroundColor #FEFEFE
+
+!define BLUE #2196F3
+!define GREEN #4CAF50
+!define ORANGE #FF9800
+!define PURPLE #9C27B0
+!define RED #F44336
+!define GRAY #607D8B
+!define YELLOW #FFC107
+
+title "Toronto Housing Price Simulation - Scenario Comparison Workflow"
+
+' Define the swimlanes
+|#LightBlue|Baseline Scenario|
+|#LightGreen|Moderate Upzoning|
+|#LightCoral|Greater Upzoning|
+|#LightGray|Analysis & Comparison|
+
+' Start point
+|Analysis & Comparison|
+start
+
+:Define Simulation Parameters;
+note right: NUM_YEARS, NUM_PARCELS, NUM_PEOPLE, NUM_REALIZATIONS
+
+:Define Common Economic Parameters;
+note right
+  inflation_rate
+  wage_growth_rate
+  market_sentiment
+  price_elasticity
+  buyer parameters
+end note
+
+fork
+
+|Baseline Scenario|
+:Configure Baseline Scenario;
+note left
+  Current zoning policies
+  Single-family: 1.0x
+  Multi-family: 1.0x
+  Mixed-use: 1.0x
+end note
+
+:Initialize Baseline Model;
+
+:Run Multiple Realizations;
+note right: 100 realizations
+
+:Record Baseline Metrics;
+
+|Analysis & Comparison|
+
+fork again
+
+|Moderate Upzoning|
+:Configure Moderate Upzoning;
+note left
+  Relaxed zoning policies
+  Single-family: 1.5x
+  Multi-family: 1.3x
+  Mixed-use: 1.2x
+end note
+
+:Initialize Moderate Upzoning Model;
+
+:Run Multiple Realizations;
+note right: 100 realizations
+
+:Record Moderate Upzoning Metrics;
+
+|Analysis & Comparison|
+
+fork again
+
+|Greater Upzoning|
+:Configure Greater Upzoning;
+note left
+  Significant zoning relaxation
+  Single-family: 2.0x
+  Multi-family: 1.6x
+  Mixed-use: 1.4x
+end note
+
+:Initialize Greater Upzoning Model;
+
+:Run Multiple Realizations;
+note right: 100 realizations
+
+:Record Greater Upzoning Metrics;
+
+|Analysis & Comparison|
+
+end fork
+
+:Aggregate Results Across Realizations;
+note right
+  For each scenario:
+  - Calculate median values
+  - Calculate 10th and 90th percentiles
+  - Sum cumulative construction
+end note
+
+:Compare Key Metrics;
+note right
+  - Median house prices
+  - Price-to-income ratios
+  - Cumulative new construction
+end note
+
+:Generate Price Comparison Visualization;
+note left: Compare price trends across scenarios
+
+:Generate Affordability Comparison Visualization;
+note left: Compare price-to-income ratios
+
+:Generate Construction Comparison Visualization;
+note left: Compare new housing units created
+
+:Produce Summary Report for 2035;
+note right
+  Final year comparison showing:
+  - Median House Price
+  - Price-to-Income Ratio
+  - Cumulative New Construction
+end note
+
+stop
+
+@enduml 

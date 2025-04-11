@@ -1,0 +1,126 @@
+@startuml Toronto Housing Model - Agent Interactions
+
+skinparam class {
+    BackgroundColor white
+    ArrowColor #333
+    BorderColor #333
+}
+
+title "Toronto Housing Price Simulation - Agent Interactions"
+
+class Environment {
+    interest_rate
+    inflation_rate
+    wage_growth_rate
+    market_sentiment
+    ---
+    update_economic_conditions()
+    update_market_sentiment()
+}
+
+class PeopleAgent {
+    id
+    income
+    savings
+    role (renter/homeowner)
+    property_owned
+    ---
+    update_income()
+    housing_budget()
+    can_afford()
+    buy_property()
+}
+
+class ParcelAgent {
+    id
+    zoning_type
+    density_allowed
+    land_value
+    improvement_value
+    owner
+    for_sale
+    units
+    max_units
+    ---
+    total_value()
+    market_price()
+    update_values()
+    can_redevelop()
+    redevelop()
+}
+
+class SimulationMetrics {
+    years
+    median_price
+    mean_price
+    price_to_income_ratio
+    sales_volume
+    new_construction
+    interest_rate
+}
+
+class ScenarioConfig {
+    name
+    description
+    interest_rate
+    property_tax_rate
+    upzoning_multiplier
+}
+
+class TorontoHousingModel {
+    year
+    parcels[]
+    people[]
+    metrics
+    scenario
+    ---
+    initialize_agents()
+    update_market_sentiment()
+    update_economic_conditions()
+    process_sales()
+    process_redevelopment()
+    update_metrics()
+    step()
+    run()
+}
+
+Environment "1" -- "1" TorontoHousingModel : influences >
+PeopleAgent "many" --o "1" TorontoHousingModel : contains >
+ParcelAgent "many" --o "1" TorontoHousingModel : contains >
+TorontoHousingModel "1" -- "1" SimulationMetrics : records >
+ScenarioConfig "1" -- "1" TorontoHousingModel : configures >
+
+PeopleAgent "0..1" -- "0..1" ParcelAgent : owns >
+ParcelAgent "0..1" -- "1" PeopleAgent : owned by >
+
+note right of ParcelAgent
+  Parcels can be redeveloped to
+  increase housing units based on
+  zoning density allowed
+end note
+
+note right of PeopleAgent
+  People start as renters and can
+  become homeowners by purchasing
+  a property they can afford
+end note
+
+note bottom of Environment
+  Market sentiment affects property prices
+  which influences buying decisions and
+  development feasibility
+end note
+
+note left of TorontoHousingModel
+  Main model class that orchestrates
+  agent interactions, economic updates,
+  and records metrics
+end note
+
+note bottom of ScenarioConfig
+  Different scenarios have different
+  upzoning multipliers that affect
+  the max_units allowed per parcel
+end note
+
+@enduml 

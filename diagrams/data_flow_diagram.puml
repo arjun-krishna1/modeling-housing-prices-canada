@@ -1,0 +1,104 @@
+@startuml Toronto Housing Model - Data Flow Diagram
+
+skinparam componentStyle rectangle
+skinparam handwritten false
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam ArrowColor #333333
+skinparam BackgroundColor #FEFEFE
+
+!define DATASTORE #AAAAAA
+!define PROCESS #66CCFF
+!define EXTERNALENTITY #FFCC66
+
+title "Toronto Housing Price Simulation - Data Flow"
+
+' External entities
+rectangle "Policy Parameters" as PolicyParams #FFCC66
+rectangle "Economic Parameters" as EconParams #FFCC66
+rectangle "Simulation Settings" as SimSettings #FFCC66
+rectangle "Visualization Engine" as VisualizationEngine #FFCC66
+rectangle "Results Display" as ResultsDisplay #FFCC66
+
+' Data stores
+database "ParcelAgent Data" as ParcelData #AAAAAA {
+    storage "ID"
+    storage "Zoning Type"
+    storage "Density Allowed"
+    storage "Land Value"
+    storage "Improvement Value"
+    storage "Owner"
+    storage "Units"
+    storage "Max Units"
+}
+
+database "PeopleAgent Data" as PeopleData #AAAAAA {
+    storage "ID"
+    storage "Income"
+    storage "Savings"
+    storage "Role"
+    storage "Property Owned"
+}
+
+database "Market Metrics" as MarketMetrics #AAAAAA {
+    storage "Median Price"
+    storage "Mean Price"
+    storage "Price-to-Income Ratio"
+    storage "Sales Volume"
+    storage "New Construction"
+    storage "Interest Rate"
+}
+
+database "Scenario Results" as ScenarioResults #AAAAAA {
+    storage "Baseline Results"
+    storage "Moderate Upzoning Results"
+    storage "Greater Upzoning Results"
+}
+
+' Processes
+rectangle "Initialization Process" as InitProcess #66CCFF {
+    component "Parameter Setup"
+    component "Agent Creation"
+    component "Initial Market Assignment"
+}
+
+rectangle "Simulation Engine" as SimEngine #66CCFF {
+    component "Economic Update"
+    component "Market Transactions"
+    component "Redevelopment Process"
+    component "Metrics Collection"
+}
+
+rectangle "Scenario Runner" as ScenarioRunner #66CCFF {
+    component "Multiple Realizations" 
+    component "Statistical Aggregation"
+}
+
+rectangle "Comparative Analysis" as CompAnalysis #66CCFF {
+    component "Metric Comparison"
+    component "Result Formatting"
+}
+
+' Data flows
+PolicyParams --> InitProcess : Zoning policies,\nupzoning multipliers
+EconParams --> InitProcess : Interest rates,\ninflation, wage growth
+SimSettings --> InitProcess : Years, parcels, people,\nrealizations
+
+InitProcess --> ParcelData : Create and initialize\nparcel data
+InitProcess --> PeopleData : Create and initialize\npeople data
+
+ParcelData --> SimEngine : Property information
+PeopleData --> SimEngine : Buyer information
+SimEngine --> ParcelData : Updated property values,\nredevelopment status
+SimEngine --> PeopleData : Updated income, savings,\nownership status
+SimEngine --> MarketMetrics : Annual metrics
+
+MarketMetrics --> ScenarioRunner : Raw metrics
+SimSettings --> ScenarioRunner : Realization count,\nyears to simulate
+
+ScenarioRunner --> ScenarioResults : Aggregated results\nwith statistical measures
+ScenarioResults --> CompAnalysis : Multiple scenario results
+CompAnalysis --> VisualizationEngine : Formatted comparison data
+VisualizationEngine --> ResultsDisplay : Charts and summary tables
+
+@enduml 

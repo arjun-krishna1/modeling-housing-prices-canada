@@ -1,0 +1,61 @@
+@startuml
+title "Toronto Housing Price Simulation Model - Conceptual Workflow"
+
+' Main Phases
+rectangle "Initialization Phase" as Init
+rectangle "Annual Simulation Loop\n(2025-2035)" as Loop
+rectangle "Analysis Phase" as Analysis
+
+' Main flow
+Init -> Loop : Initialize
+Loop -> Analysis : After 10 Years
+
+' Phase Components
+rectangle "Parameters" as Params
+rectangle "Create Agents" as CreateAgents
+rectangle "Initial Market" as InitMarket
+
+rectangle "Economic Updates" as EconUpdates
+rectangle "Agent Updates" as AgentUpdates
+rectangle "Market Transactions" as MarketTrans
+rectangle "Development Activities" as DevAct
+rectangle "Metrics Collection" as Metrics
+
+rectangle "Multiple Realizations" as MultiReal
+rectangle "Scenario Comparison" as ScenComp
+rectangle "Visualization" as Visual
+
+' Component connections
+Params -> CreateAgents
+CreateAgents -> InitMarket
+
+EconUpdates -> AgentUpdates
+AgentUpdates -> MarketTrans
+MarketTrans -> DevAct
+DevAct -> Metrics
+Metrics -> EconUpdates : Feedback
+
+MultiReal -> ScenComp
+ScenComp -> Visual
+
+' Notes
+note right of Loop
+  Repeats annually from
+  2025 to 2035
+end note
+
+note right of Init
+  Input Scenarios:
+  - Baseline
+  - Moderate Upzoning
+  - Greater Upzoning
+end note
+
+note right of Analysis
+  Key Metrics:
+  - Housing Prices
+  - Price-to-Income Ratio
+  - New Construction
+end note
+
+@enduml 

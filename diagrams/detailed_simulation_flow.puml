@@ -1,0 +1,180 @@
+@startuml Toronto Housing Model - Detailed Process Flow
+
+skinparam handwritten false
+skinparam shadowing false
+skinparam DefaultFontSize 12
+skinparam ArrowColor #333333
+skinparam BackgroundColor #FEFEFE
+
+!define BLUE #2196F3
+!define GREEN #4CAF50
+!define ORANGE #FF9800
+!define PURPLE #9C27B0
+!define RED #F44336
+!define GRAY #607D8B
+!define YELLOW #FFC107
+
+title "Toronto Housing Price Simulation - Detailed Process Flow"
+
+' Starting point
+start
+
+:Load Simulation Parameters;
+note right: NUM_YEARS, NUM_PARCELS, NUM_PEOPLE, NUM_REALIZATIONS
+
+:Configure Scenario Parameters;
+note right
+  Baseline: Current zoning
+  Moderate Upzoning: 1.5x density in SF zones
+  Greater Upzoning: 2.0x density in SF zones
+end note
+
+' Agent Initialization
+:Initialize Parcel Agents;
+note left
+  Set zoning type
+  Calculate density_allowed
+  Set land_value and improvement_value
+  Set units = 1
+end note
+
+:Initialize People Agents;
+note right
+  Set income
+  Calculate savings
+  Set initial role = 'renter'
+end note
+
+:Assign Initial Properties;
+note left
+  Match renters with properties
+  they can afford
+  Update roles to 'homeowner'
+end note
+
+' Main simulation loop
+repeat
+  :Update Economic Conditions;
+  note left
+    Adjust interest_rate
+    Adjust inflation_rate
+    Adjust wage_growth_rate
+  end note
+  
+  :Update Market Sentiment;
+  note right
+    Sentiment affected by:
+    - Interest rates
+    - Inflation
+    - Random market factors
+  end note
+  
+  ' People agent updates
+  :Update People Agents;
+  note left
+    Increase income based on wage_growth_rate
+    Add to savings based on income and savings_rate
+  end note
+  
+  ' Parcel agent updates
+  :Update Parcel Agents;
+  note right
+    Update land_value and improvement_value
+    based on inflation_rate
+  end note
+  
+  ' Market transactions
+  :Determine Properties For Sale;
+  note left
+    Random 5% chance of existing
+    properties going for sale
+  end note
+  
+  :Process Property Sales;
+  
+  ' Decision logic for sales
+  if (Any properties for sale?) then (yes)
+    :Find potential buyers;
+    note right
+      Renters who can afford
+      the property price
+    end note
+    
+    if (Potential buyers exist?) then (yes)
+      :Sell to highest bidder;
+      :Update buyer status to homeowner;
+      :Record sale in metrics;
+    else (no)
+      :Property remains unsold;
+    endif
+  else (no)
+    :No sales this cycle;
+  endif
+  
+  ' Development logic
+  :Check Parcels for Redevelopment;
+  
+  ' Decision logic for redevelopment
+  if (Any parcels can redevelop?) then (yes)
+    :Calculate development economics;
+    note left
+      Compare current value to
+      potential value after redevelopment
+    end note
+    
+    if (Development is profitable?) then (yes)
+      :Redevelop eligible parcels;
+      :Increase housing units;
+      :Update improvement value;
+      :Record new construction in metrics;
+    else (no)
+      :No redevelopment this cycle;
+    endif
+  else (no)
+    :No redevelopment potential;
+  endif
+  
+  ' Collect metrics
+  :Calculate Housing Prices;
+  :Calculate Price-to-Income Ratios;
+  :Record Annual Metrics;
+  
+  :Year += 1;
+  
+repeat while (Year <= NUM_YEARS) is (yes)
+-> no;
+
+' Analysis
+:Run Multiple Realizations;
+note right
+  Execute simulation NUM_REALIZATIONS times
+  to account for random variations
+end note
+
+:Aggregate Results Across Realizations;
+note left
+  Calculate statistical measures:
+  - Median values
+  - 10th and 90th percentiles
+end note
+
+:Compare Scenarios;
+note right
+  Analyze differences between:
+  - Baseline
+  - Moderate Upzoning
+  - Greater Upzoning
+end note
+
+:Generate Visualizations;
+note left
+  Price trends
+  Affordability comparisons
+  Construction comparisons
+end note
+
+:Output Summary Statistics;
+
+stop
+
+@enduml 
